@@ -5,12 +5,13 @@ export async function requestsService(
   method: Method,
   servico?: InterfaceService,
   db?: "compras" | "lugares" | "metas" | "tarefas",
-  select?: (value: any) => void
+  select?: (value: any) => void,
+  id?: number | string
 ) {
   try {
     const resposta = await axios({
       method: method,
-      url: `http://192.168.15.37:3001/${db}/`,
+      url: `http://192.168.15.37:3001/${db}/${id}`,
       data: servico !== undefined ? servico : null,
     });
     const resp = await axios.get(`http://192.168.15.37:3001/${db}/`);
@@ -24,3 +25,4 @@ export async function requestsService(
     console.log(error);
   }
 }
+

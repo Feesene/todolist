@@ -55,10 +55,10 @@ export const InputText = ({
         onTouchStart={() => {
           setState(true);
         }}
-        onTouchEnd={() => {
-          onClickButton;
+        onTouchEndCapture={() => {
           setState(false);
         }}
+        onTouchEnd={onClickButton}
         style={styles(state).button}
       >
         <Text style={{ color: "#eee" }}>OK</Text>
@@ -77,8 +77,8 @@ const styles = (state?: boolean) =>
       alignItems: "center",
       width: "70%",
       height: 70,
-      marginTop:10,
-      marginBottom:20,
+      marginTop: 10,
+      marginBottom: 20,
       borderRadius: 80,
       borderStyle: "solid",
       borderColor: "#323232",
@@ -92,6 +92,7 @@ const styles = (state?: boolean) =>
     },
     input2: {
       marginTop: 5,
+      marginLeft: -5,
       width: "20%",
       // backgroundColor: "#0000ff20",
     },
