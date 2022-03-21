@@ -1,18 +1,14 @@
-import React, { Children, ReactNode } from "react";
-import { KeyboardType, StyleSheet, View, Image, Text } from "react-native";
+import React from "react";
+import {  StyleSheet, View, Image, Text } from "react-native";
 
 import { Button } from "../../components/Button";
 import { colors } from "../../colors";
 import { useSelect } from "../../hooks/UseSelect";
-interface InterfaceMenu {}
 
-export const Menu = ({}: InterfaceMenu) => {
-  const { Select, changeStateSelect } = useSelect();
+import { NativeBaseProvider, Box ,Icon } from "native-base";
 
-  React.useEffect(() => {
-    // console.log(Select);
-  }, [Select]);
-
+export const Menu = () => {
+  const { changeStateSelect } = useSelect();
   return (
     <View style={[styles().container]}>
       <View style={styles().image}>

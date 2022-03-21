@@ -1,7 +1,5 @@
-import React, { Children, ReactNode } from "react";
-import { KeyboardType, StyleSheet, View, Text, Image } from "react-native";
-
-import { colors } from "../../colors";
+import React, { ReactNode } from "react";
+import { StyleSheet, View, Image } from "react-native";
 import { useSelect } from "../../hooks/UseSelect";
 import { Button } from "../Button";
 
@@ -11,12 +9,17 @@ interface InterfaceToolbar {
 }
 
 export const Toolbar = ({ onClick, children }: InterfaceToolbar) => {
-    const { Select, changeStateSelect } = useSelect();
+  const { Select, changeStateSelect } = useSelect();
   return (
     <View onTouchEnd={() => onClick} style={[styles().container]}>
       <Button size={90}>
         <View style={styles().images}>
-          <View  onTouchEnd={()=>{changeStateSelect(1)}} style={styles().icon}>
+          <View
+            onTouchEnd={() => {
+              changeStateSelect(1);
+            }}
+            style={styles().icon}
+          >
             <Image
               style={{
                 width: 35,
@@ -31,7 +34,12 @@ export const Toolbar = ({ onClick, children }: InterfaceToolbar) => {
               }
             ></Image>
           </View>
-          <View   onTouchEnd={()=>{changeStateSelect(2)}} style={styles().icon}>
+          <View
+            onTouchEnd={() => {
+              changeStateSelect(2);
+            }}
+            style={styles().icon}
+          >
             <Image
               style={{
                 width: 30,
@@ -39,12 +47,19 @@ export const Toolbar = ({ onClick, children }: InterfaceToolbar) => {
                 alignSelf: "center",
               }}
               resizeMode={"contain"}
-              source={Select === 2
-                ? require("../../../assets/lugaresc.png")
-                : require("../../../assets/lugar.png")}
+              source={
+                Select === 2
+                  ? require("../../../assets/lugaresc.png")
+                  : require("../../../assets/lugar.png")
+              }
             ></Image>
           </View>
-          <View  onTouchEnd={()=>{changeStateSelect(3)}} style={styles().icon}>
+          <View
+            onTouchEnd={() => {
+              changeStateSelect(3);
+            }}
+            style={styles().icon}
+          >
             <Image
               style={{
                 width: 30,
@@ -52,12 +67,19 @@ export const Toolbar = ({ onClick, children }: InterfaceToolbar) => {
                 alignSelf: "center",
               }}
               resizeMode={"contain"}
-              source={Select === 3
-                ? require("../../../assets/metasc.png")
-                :require("../../../assets/metas.png")}
+              source={
+                Select === 3
+                  ? require("../../../assets/metasc.png")
+                  : require("../../../assets/metas.png")
+              }
             ></Image>
           </View>
-          <View  onTouchEnd={()=>{changeStateSelect(4)}} style={styles().icon}>
+          <View
+            onTouchEnd={() => {
+              changeStateSelect(4);
+            }}
+            style={styles().icon}
+          >
             <Image
               style={{
                 width: 30,
@@ -65,9 +87,11 @@ export const Toolbar = ({ onClick, children }: InterfaceToolbar) => {
                 alignSelf: "center",
               }}
               resizeMode={"contain"}
-              source={Select === 4
-                ? require("../../../assets/tarefasc.png")
-                :require("../../../assets/tarefa.png")}
+              source={
+                Select === 4
+                  ? require("../../../assets/tarefasc.png")
+                  : require("../../../assets/tarefa.png")
+              }
             ></Image>
           </View>
         </View>

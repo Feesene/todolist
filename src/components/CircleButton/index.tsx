@@ -1,6 +1,5 @@
-import React, { Children, ReactNode } from "react";
-import { KeyboardType, StyleSheet, View, Text, Image } from "react-native";
-
+import React, { ReactNode } from "react";
+import { StyleSheet, View, Image } from "react-native";
 import { colors } from "../../colors";
 
 interface InterfaceCircleButton {
@@ -14,13 +13,21 @@ export const CircleButton = ({
   state = "more",
   children,
 }: InterfaceCircleButton) => {
+  const [hover, setHover] = React.useState<boolean>(false);
 
   return (
-    <View onTouchEnd={onClick} style={[styles().container, styles().elevation]}>
+    <View
+      onTouchStart={() => {
+        setHover(true);
+      }}
+      onTouchEndCapture={() => {
+        setHover(false);
+      }}
+      onTouchEnd={onClick}
+      style={[styles(hover).container, styles().elevation]}
+    >
       {state === "more" && (
-        <View
-          style={styles().clickButton}
-        >
+        <View style={styles().clickButton}>
           <Image
             style={{ width: 30, height: 30, alignSelf: "center" }}
             resizeMode={"contain"}
@@ -29,7 +36,7 @@ export const CircleButton = ({
         </View>
       )}
       {state === "cancel" && (
-        <View style={styles().clickButton} >
+        <View style={styles().clickButton}>
           <Image
             style={{ width: 25, height: 25, alignSelf: "center" }}
             resizeMode={"contain"}
@@ -49,7 +56,7 @@ export const CircleButton = ({
   );
 };
 
-const styles = () =>
+const styles = (hover?: boolean) =>
   StyleSheet.create({
     container: {
       height: 80,
@@ -63,7 +70,7 @@ const styles = () =>
       shadowOffset: { height: 2, width: 1 },
       shadowOpacity: 1,
       shadowRadius: 3,
-      backgroundColor: colors.Light100,
+      backgroundColor: hover ? colors.Light60 : colors.Light100,
     },
     clickButton: {
       display: "flex",
@@ -71,7 +78,7 @@ const styles = () =>
       alignItems: "center",
       height: "100%",
       width: "100%",
-      backgroundColor:"#32323200"
+      backgroundColor: "#32323200",
     },
     elevation: {
       elevation: 15,

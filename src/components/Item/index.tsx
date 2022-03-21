@@ -1,6 +1,5 @@
-import React, { Children, ReactNode } from "react";
-import { KeyboardType, StyleSheet, View, Text } from "react-native";
-
+import React, { ReactNode } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { colors } from "../../colors";
 
 interface InterfaceItem {
@@ -9,6 +8,7 @@ interface InterfaceItem {
   name?: string;
   quant?: string;
   selected?: boolean;
+  showSelect?: boolean;
   children?: ReactNode;
 }
 
@@ -18,16 +18,19 @@ export const Item = ({
   name,
   quant,
   selected = false,
+  showSelect = true,
   children,
 }: InterfaceItem) => {
   return (
     <View onTouchEnd={onClick} style={[styles().container, styles().elevation]}>
       <Text style={[styles().name]}>{name}</Text>
       <Text style={[styles().quant]}>{quant}</Text>
-      <View onTouchEnd={onClickCheck} style={[styles().check]}>
-        <View style={[styles(selected).circle]}>
-          <View style={[styles(selected).point]}></View>
-        </View>
+      <View onTouchStart={onClickCheck} style={[styles().check]}>
+        {showSelect && (
+          <View style={[styles(selected).circle]}>
+            <View style={[styles(selected).point]}></View>
+          </View>
+        )}
       </View>
       {children}
     </View>
@@ -62,12 +65,12 @@ const styles = (selected?: boolean) =>
     },
     quant: { width: "20%" },
     check: {
-      
       width: "20%",
       height: "100%",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      zIndex:4
     },
     circle: {
       display: "flex",

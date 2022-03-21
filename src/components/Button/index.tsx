@@ -1,5 +1,5 @@
-import React, { Children, ReactNode } from "react";
-import { KeyboardType, StyleSheet, View, Text } from "react-native";
+import React, { ReactNode } from "react";
+import { StyleSheet, View } from "react-native";
 
 import { colors } from "../../colors";
 
@@ -7,22 +7,14 @@ interface InterfaceButton {
   onClick?: () => void;
   size?: number;
   children?: ReactNode;
-  iconLeft?: {
-    name: string;
-    type: string;
-    size?: number;
-    onPress?: () => void;
-  };
 }
 
-export const Button = ({
-  onClick,
-  iconLeft,
-  children,
-  size = 70,
-}: InterfaceButton) => {
+export const Button = ({ onClick, children, size = 70 }: InterfaceButton) => {
   return (
-    <View onTouchEnd={onClick} style={[styles(size).container, styles().elevation]}>
+    <View
+      onTouchEnd={onClick}
+      style={[styles(size).container, styles().elevation]}
+    >
       {children}
     </View>
   );

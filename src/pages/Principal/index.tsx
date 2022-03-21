@@ -1,48 +1,33 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import { colors } from "../../colors";
+import { StyleSheet, View } from "react-native";
 import { Menu } from "../../pages/Menu";
-import { Compras } from "../../pages/Compras";
-import { Lugares } from "../../pages/Lugares";
-import { Tarefas } from "../../pages/Tarefas";
-import { Metas } from "../../pages/Metas";
+import { List } from "../List";
 import React from "react";
 import { useSelect } from "../../hooks/UseSelect";
+import { NativeBaseProvider } from "native-base";
 
 const Principal = () => {
   const { Select } = useSelect();
 
-//   React.useEffect(()=>{
-//     if(first === false){
-//       setFirst(true)
-//       changeStateSelect(0)
-//     }
-//   },[])
-
-
-  React.useEffect(()=>{
-    // console.log(Select)
-  },[Select])
-
   return (
-    <View style={styles.container}>
+    
+      <View style={styles.container}>
         {Select === undefined && <Menu></Menu>}
         {Select === 0 && <Menu></Menu>}
-        {Select === 1 && <Compras></Compras>}
-        {Select === 2 && <Lugares></Lugares>}
-        {Select === 3 && <Tarefas></Tarefas>}
-        {Select === 4 && <Metas></Metas>}
+        {Select === 1 && <List place="compras"></List>}
+        {Select === 2 && <List place="lugares"></List>}
+        {Select === 3 && <List place="metas"></List>}
+        {Select === 4 && <List place="tarefas"></List>}
+      </View>
 
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width:"100%",
+    width: "100%",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 });
 export default Principal;

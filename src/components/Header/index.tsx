@@ -1,20 +1,14 @@
-import React, { Children, ReactNode } from "react";
-import { KeyboardType, StyleSheet, View, Text, Image } from "react-native";
+import React, { ReactNode } from "react";
+import { StyleSheet, View, Image } from "react-native";
 
-import { colors } from "../../colors";
 import { useSelect } from "../../hooks/UseSelect";
-import { CircleButton } from "../CircleButton";
 
 interface InterfaceHeader {
   onClickHistory?: () => void;
-  onClickAdd?: () => void;
   children?: ReactNode;
 }
 
-export const Header = ({
-  children,
-  onClickHistory,
-}: InterfaceHeader) => {
+export const Header = ({ children, onClickHistory }: InterfaceHeader) => {
   const { Select, changeStateSelect } = useSelect();
   return (
     <View style={[styles().container]}>
@@ -30,7 +24,7 @@ export const Header = ({
         ></Image>
       </View>
       {children}
-     
+
       <View onTouchEnd={onClickHistory}>
         <Image
           style={{ width: 40, height: 40, alignSelf: "center" }}
@@ -38,7 +32,6 @@ export const Header = ({
           source={require("../../../assets/history.png")}
         ></Image>
       </View>
-    
     </View>
   );
 };

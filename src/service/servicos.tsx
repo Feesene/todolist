@@ -14,7 +14,9 @@ export async function requestsService(
       url: `http://192.168.15.37:3001/${db}/${id}`,
       data: servico !== undefined ? servico : null,
     });
-    const resp = await axios.get(`http://192.168.15.37:3001/${db}/`);
+    const resp = await axios.get(
+      `http://192.168.15.37:3001/${db}/?_sort=id&_order=desc`
+    );
     if (resposta.status === 201) {
       if (select) {
         select(resp.data);
@@ -22,7 +24,7 @@ export async function requestsService(
     }
     return resposta.data;
   } catch (error) {
+
     console.log(error);
   }
 }
-

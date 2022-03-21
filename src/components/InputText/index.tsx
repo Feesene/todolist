@@ -1,7 +1,8 @@
 import React from "react";
-import { KeyboardType, StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Input } from "react-native-elements";
 import { colors } from "../../colors";
+
 
 interface IInputText {
   placeHolder?: string;
@@ -26,6 +27,7 @@ export const InputText = ({
     <View style={styles().container}>
       <View style={styles().input1}>
         <Input
+        
           autoFocus={true}
           textAlign={"center"}
           onChangeText={onChange1}
