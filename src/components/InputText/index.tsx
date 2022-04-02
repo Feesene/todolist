@@ -1,8 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
-import { Input } from "react-native-elements";
+import { StyleSheet, View, Text, ImageBackground } from "react-native";
+import { Input } from "native-base";
+//import { Input } from "react-native-elements";
 import { colors } from "../../colors";
 
+import AppLoading from "expo-app-loading";
+import { useFonts, Righteous_400Regular } from "@expo-google-fonts/righteous";
 
 interface IInputText {
   placeHolder?: string;
@@ -23,49 +26,80 @@ export const InputText = ({
   quant = "",
 }: IInputText) => {
   const [state, setState] = React.useState<boolean>(false);
+
+  let [fontsLoaded] = useFonts({
+    Righteous_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
     <View style={styles().container}>
-      <View style={styles().input1}>
-        <Input
-        
-          autoFocus={true}
-          textAlign={"center"}
-          onChangeText={onChange1}
-          value={String(item)}
-          inputStyle={{
-            borderRadius: 5,
-            backgroundColor: "#fff",
-            marginTop: 20,
-          }}
-          placeholder={placeHolder}
-        ></Input>
-      </View>
-      <View style={styles().input2}>
-        <Input
-          onChangeText={onChange2}
-          textAlign={"center"}
-          value={String(quant)}
-          inputStyle={{
-            borderRadius: 5,
-            height: "10%",
-            backgroundColor: "#fff",
-            marginTop: 20,
-          }}
-        ></Input>
-      </View>
-      <View
-        onTouchStart={() => {
-          setState(true);
+      <ImageBackground
+        style={{
+          width: "100%",
+          height: "100%",
+          alignSelf: "center",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
-        onTouchEndCapture={() => {
-          setState(false);
-        }}
-        onTouchEnd={onClickButton}
-        style={styles(state).button}
+        resizeMode={"contain"}
+        source={require("../../../assets/teste.png")}
       >
-        <Text style={{ color: "#eee" }}>OK</Text>
-      </View>
-      <View></View>
+        <View style={styles().input1}>
+          <Input
+            bg={"#fff"}
+            autoFocus={true}
+            textAlign={"center"}
+            onChangeText={onChange1}
+            value={String(item)}
+            fontSize="lg"
+            height={10}
+            marginTop={-1}
+            marginLeft={2}
+            placeholder={placeHolder}
+          ></Input>
+        </View>
+        <View style={styles().input2}>
+          <Input
+            bg={"#fff"}
+            marginTop={-1}
+            onChangeText={onChange2}
+            textAlign={"center"}
+            value={String(quant)}
+            height={10}
+            marginLeft={1}
+            width={60}
+            fontSize="sm"
+          ></Input>
+        </View>
+        <View
+          onTouchStart={() => {
+            setState(true);
+          }}
+          onTouchEndCapture={() => {
+            setState(false);
+          }}
+          onTouchEnd={onClickButton}
+          style={styles(state).button}
+        >
+          <Text
+            style={{
+              fontFamily: "Righteous_400Regular",
+
+              color: "#eee",
+              fontSize: 16,
+            }}
+          >
+            OK
+          </Text>
+        </View>
+        <View></View>
+      </ImageBackground>
     </View>
   );
 };
@@ -77,14 +111,14 @@ const styles = (state?: boolean) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      width: "70%",
-      height: 70,
+      width: "75%",
+      height: 90,
       marginTop: 10,
       marginBottom: 20,
       borderRadius: 80,
-      borderStyle: "solid",
-      borderColor: "#323232",
-      borderWidth: 1,
+      // borderStyle: "solid",
+      // borderColor: "#323232",
+      // borderWidth: 1,
     },
     input1: {
       marginTop: 5,
@@ -102,6 +136,7 @@ const styles = (state?: boolean) =>
       width: 60,
       height: 60,
       borderRadius: 80,
+      marginLeft: 10,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

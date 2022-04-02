@@ -1,7 +1,11 @@
 import React, { ReactNode } from "react";
 import { StyleSheet, View, Image } from "react-native";
+import colorsThemes from "../../colors/colors";
 import { useSelect } from "../../hooks/UseSelect";
 import { Button } from "../Button";
+import { IconToolbar } from "../IconToolbar";
+import { AntDesign, FontAwesome , Entypo} from '@expo/vector-icons';
+import { Icon } from "native-base";
 
 interface InterfaceToolbar {
   onClick?: (value: string) => void;
@@ -9,91 +13,39 @@ interface InterfaceToolbar {
 }
 
 export const Toolbar = ({ onClick, children }: InterfaceToolbar) => {
-  const { Select, changeStateSelect } = useSelect();
+  const { Select } = useSelect();
   return (
-    <View onTouchEnd={() => onClick} style={[styles().container]}>
+    <View
+      onTouchEnd={() => onClick}
+      style={[styles().container]}
+    >
       <Button size={90}>
-        <View style={styles().images}>
-          <View
-            onTouchEnd={() => {
-              changeStateSelect(1);
-            }}
-            style={styles().icon}
-          >
-            <Image
-              style={{
-                width: 35,
-                height: 35,
-                alignSelf: "center",
-              }}
-              resizeMode={"contain"}
-              source={
-                Select === 1
-                  ? require("../../../assets/comprasc.png")
-                  : require("../../../assets/compras.png")
-              }
-            ></Image>
-          </View>
-          <View
-            onTouchEnd={() => {
-              changeStateSelect(2);
-            }}
-            style={styles().icon}
-          >
-            <Image
-              style={{
-                width: 30,
-                height: 30,
-                alignSelf: "center",
-              }}
-              resizeMode={"contain"}
-              source={
-                Select === 2
-                  ? require("../../../assets/lugaresc.png")
-                  : require("../../../assets/lugar.png")
-              }
-            ></Image>
-          </View>
-          <View
-            onTouchEnd={() => {
-              changeStateSelect(3);
-            }}
-            style={styles().icon}
-          >
-            <Image
-              style={{
-                width: 30,
-                height: 30,
-                alignSelf: "center",
-              }}
-              resizeMode={"contain"}
-              source={
-                Select === 3
-                  ? require("../../../assets/metasc.png")
-                  : require("../../../assets/metas.png")
-              }
-            ></Image>
-          </View>
-          <View
-            onTouchEnd={() => {
-              changeStateSelect(4);
-            }}
-            style={styles().icon}
-          >
-            <Image
-              style={{
-                width: 30,
-                height: 30,
-                alignSelf: "center",
-              }}
-              resizeMode={"contain"}
-              source={
-                Select === 4
-                  ? require("../../../assets/tarefasc.png")
-                  : require("../../../assets/tarefa.png")
-              }
-            ></Image>
-          </View>
+        <View style={[styles().images]}>
+          <IconToolbar
+            name="Compras"
+            select={1}
+            nameIcon={"shopping-cart"}
+            typeIcon={FontAwesome}
+
+          />
+          <IconToolbar
+            name="Lugares"
+            select={2}
+            nameIcon={"location"}  
+            typeIcon={Entypo}
+          />
+          <IconToolbar
+            name="Metas"
+            select={3}
+            nameIcon={"line-chart"}
+            typeIcon={FontAwesome}
+          />
+          <IconToolbar
+            name="Tarefas"
+            select={4}
+            nameIcon={"profile"}
+            typeIcon={AntDesign}
+          />
         </View>
       </Button>
       {children}
@@ -118,5 +70,22 @@ const styles = () =>
     },
     icon: {
       width: "25%",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    selected: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colorsThemes.primary,
+      width: 60,
+      height: 70,
+      borderRadius: 10,
+    },
+    unselected: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
     },
   });

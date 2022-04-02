@@ -38,7 +38,7 @@ export const CircleButton = ({
       {state === "cancel" && (
         <View style={styles().clickButton}>
           <Image
-            style={{ width: 25, height: 25, alignSelf: "center" }}
+            style={{ width: 45, height: 45, alignSelf: "center" }}
             resizeMode={"contain"}
             source={require("../../../assets/cancel.png")}
           ></Image>

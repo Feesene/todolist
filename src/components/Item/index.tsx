@@ -2,6 +2,9 @@ import React, { ReactNode } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { colors } from "../../colors";
 
+import AppLoading from "expo-app-loading";
+import { useFonts, Righteous_400Regular } from "@expo-google-fonts/righteous";
+
 interface InterfaceItem {
   onClick?: () => void;
   onClickCheck?: () => void;
@@ -21,11 +24,19 @@ export const Item = ({
   showSelect = true,
   children,
 }: InterfaceItem) => {
+  let [fontsLoaded] = useFonts({
+    Righteous_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   return (
-    <View onTouchEnd={onClick} style={[styles().container, styles().elevation]}>
+    <View   onTouchEnd={onClick} style={[styles().container, styles().elevation]}>
       <Text style={[styles().name]}>{name}</Text>
       <Text style={[styles().quant]}>{quant}</Text>
-      <View onTouchStart={onClickCheck} style={[styles().check]}>
+      <View onTouchEnd={onClickCheck} style={[styles().check]}>
         {showSelect && (
           <View style={[styles(selected).circle]}>
             <View style={[styles(selected).point]}></View>
@@ -62,15 +73,23 @@ const styles = (selected?: boolean) =>
     name: {
       width: "60%",
       paddingLeft: 15,
+      fontFamily: "Righteous_400Regular",
+      fontSize: 15,
+      color: "#32323290",
     },
-    quant: { width: "20%" },
+    quant: {
+      width: "20%",
+      fontFamily: "Righteous_400Regular",
+      fontSize: 15,
+      color: "#32323280",
+    },
     check: {
       width: "20%",
       height: "100%",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      zIndex:4
+      zIndex: 4,
     },
     circle: {
       display: "flex",
@@ -79,7 +98,7 @@ const styles = (selected?: boolean) =>
       width: 20,
       height: 20,
       borderWidth: 1,
-      borderColor: selected ? colors.primary : "#323232",
+      borderColor: selected ? colors.primary : "#32323290",
       borderRadius: 80,
     },
     point: {

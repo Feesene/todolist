@@ -1,8 +1,7 @@
 export interface InterfaceService {
-    id?: number | undefined;
-    name?: string | undefined;
-    number?: string | undefined;
-    status?:number | undefined
-    checked?: boolean;
-  }
-  
+  id?: number;
+  name?: string;
+  number?: string;
+  status?: number;
+  checked?: boolean;
+}

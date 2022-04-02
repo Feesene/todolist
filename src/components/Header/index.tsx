@@ -1,14 +1,17 @@
 import React, { ReactNode } from "react";
 import { StyleSheet, View, Image } from "react-native";
+import { Icon } from "native-base";
+import { AntDesign, Entypo } from "@expo/vector-icons";
 
 import { useSelect } from "../../hooks/UseSelect";
 
 interface InterfaceHeader {
   onClickHistory?: () => void;
   children?: ReactNode;
+  colorHistory?:string;
 }
 
-export const Header = ({ children, onClickHistory }: InterfaceHeader) => {
+export const Header = ({ colorHistory,children, onClickHistory }: InterfaceHeader) => {
   const { Select, changeStateSelect } = useSelect();
   return (
     <View style={[styles().container]}>
@@ -17,20 +20,12 @@ export const Header = ({ children, onClickHistory }: InterfaceHeader) => {
           changeStateSelect(0);
         }}
       >
-        <Image
-          style={{ width: 30, height: 30, alignSelf: "center" }}
-          resizeMode={"contain"}
-          source={require("../../../assets/back.png")}
-        ></Image>
+        <Icon size={"12"}  color={"#32323280"} as={Entypo} name="chevron-left" />
       </View>
       {children}
 
       <View onTouchEnd={onClickHistory}>
-        <Image
-          style={{ width: 40, height: 40, alignSelf: "center" }}
-          resizeMode={"contain"}
-          source={require("../../../assets/history.png")}
-        ></Image>
+        <Icon size={"10"}  color={colorHistory} as={AntDesign} name="clockcircleo" />
       </View>
     </View>
   );

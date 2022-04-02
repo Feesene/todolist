@@ -1,14 +1,22 @@
 import React from "react";
-import {  StyleSheet, View, Image, Text } from "react-native";
-
+import { StyleSheet, View, Image, Text } from "react-native";
+import { Icon } from "native-base";
 import { Button } from "../../components/Button";
 import { colors } from "../../colors";
 import { useSelect } from "../../hooks/UseSelect";
-
-import { NativeBaseProvider, Box ,Icon } from "native-base";
+import { useFonts, Righteous_400Regular } from "@expo-google-fonts/righteous";
+import AppLoading from "expo-app-loading";
+import { AntDesign, FontAwesome , Entypo} from '@expo/vector-icons';
 
 export const Menu = () => {
   const { changeStateSelect } = useSelect();
+  let [fontsLoaded] = useFonts({
+    Righteous_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
     <View style={[styles().container]}>
       <View style={styles().image}>
@@ -25,41 +33,28 @@ export const Menu = () => {
         }}
       >
         <View style={styles().button}>
-          <Image
-            style={{ width: 40, height: 40, alignSelf: "center" }}
-            resizeMode={"contain"}
-            source={require("../../../assets/compras.png")}
-          ></Image>
+         <Icon color={"#32323280"} as={FontAwesome} name="shopping-cart" />
+
           <Text style={[styles().text]}>Compras</Text>
         </View>
       </Button>
       <Button size={70} onClick={() => changeStateSelect(2)}>
         <View style={styles().button}>
-          <Image
-            style={{ width: 35, height: 35, alignSelf: "center" }}
-            resizeMode={"contain"}
-            source={require("../../../assets/lugar.png")}
-          ></Image>
+          <Icon color={"#32323280"} as={Entypo} name="location" />
           <Text style={[styles().text]}>Lugares</Text>
         </View>
       </Button>
       <Button size={70} onClick={() => changeStateSelect(3)}>
         <View style={styles().button}>
-          <Image
-            style={{ width: 30, height: 30, alignSelf: "center" }}
-            resizeMode={"contain"}
-            source={require("../../../assets/metas.png")}
-          ></Image>
+         
+          <Icon style={{width:35}} color={"#32323280"} as={FontAwesome} name="line-chart" />
+          
           <Text style={[styles().text]}>Metas</Text>
         </View>
       </Button>
       <Button size={70} onClick={() => changeStateSelect(4)}>
         <View style={styles().button}>
-          <Image
-            style={{ width: 30, height: 30, alignSelf: "center" }}
-            resizeMode={"contain"}
-            source={require("../../../assets/tarefa.png")}
-          ></Image>
+          <Icon color={"#32323280"} as={AntDesign} name="profile" />
           <Text style={[styles().text]}>Tarefas</Text>
         </View>
       </Button>
@@ -82,6 +77,7 @@ const styles = () =>
       color: "#00000060",
       width: "60%",
       marginLeft: 30,
+      fontFamily: "Righteous_400Regular",
     },
     button: {
       width: "100%",

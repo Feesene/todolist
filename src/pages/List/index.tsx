@@ -6,7 +6,6 @@ import {
   RefreshControl,
   Text,
 } from "react-native";
-
 import { colors } from "../../colors";
 import { Item } from "../../components/Item";
 import { Toolbar } from "../../components/Toolbar";
@@ -17,6 +16,7 @@ import axios from "axios";
 import { InputText } from "../../components/InputText";
 import { requestsService } from "../../service/servicos";
 import { Box, useToast } from "native-base";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface InterfaceList {
   place?: "compras" | "lugares" | "metas" | "tarefas";
@@ -33,6 +33,29 @@ export const List = ({ place }: InterfaceList) => {
   const toast = useToast();
   const [refreshing, setRefreshing] = React.useState(false);
 
+  //PEGAR LISTA DO CACHE
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem(`@${place}`);
+      if (value !== null) {
+        //  console.log(JSON.parse(String(value)), "previous")
+        changeSelect(JSON.parse(String(value)));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //ADICIONAR CACHE
+  const storeData = async (value: string) => {
+    try {
+      await AsyncStorage.setItem(`@${place}`, value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  //QUANDO CARREGAR A LISTA NO LOAD
   React.useEffect(() => {
     if (enter === false) {
       const set = async () => {
@@ -45,6 +68,7 @@ export const List = ({ place }: InterfaceList) => {
             e.checked = false;
           });
           changeSelect(array);
+          storeData(JSON.stringify(array));
           Onenter(true);
         }
       };
@@ -52,88 +76,7 @@ export const List = ({ place }: InterfaceList) => {
     }
   }, []);
 
-  const refresh = async () => {
-    setRefreshing(true);
-    const resp = await axios.get(
-      `http://192.168.15.37:3001/${place}/?_sort=id&_order=desc`
-    );
-    if (resp.status === 200) {
-      let array: InterfaceService[] = resp.data;
-      array.map((e) => {
-        e.checked = false;
-      });
-      changeSelect(array);
-    }
-
-    setRefreshing(false);
-  };
-
-  const updateList = () => {
-    const set = async () => {
-      const resp = await axios.get(
-        `http://192.168.15.37:3001/${place}/?_sort=id&_order=desc`
-      );
-      if (resp.status === 200) {
-        let array: InterfaceService[] = resp.data;
-        array.map((e) => {
-          e.checked = false;
-        });
-        changeSelect(array);
-      }
-    };
-    set();
-
-    changeCircleCheck(false);
-  };
-
-  React.useEffect(() => {
-    const found = select.find((e) => e.checked === true);
-    if (found) {
-      changeCircleCheck(true);
-    } else {
-      changeCircleCheck(false);
-    }
-  }, [select]);
-
-  const checkClick = (e: InterfaceService) => {
-    let array: InterfaceService[] = select;
-    const newArray = array.map((fe) => {
-      if (e.id === fe.id) {
-        fe.checked = !e.checked;
-      }
-      return fe;
-    });
-    changeSelect(newArray);
-  };
-
-  const circleCheckFunction = () => {
-    select.map((e) => {
-      if (e.checked === true) {
-        requestsService(
-          "PUT",
-          {
-            id: e.id,
-            name: e.name,
-            number: e.number,
-            status: 1,
-          },
-          place,
-          changeSelect,
-          e.id
-        );
-      }
-    });
-    updateList();
-  };
-
-  const circleMoreFunction = () => {
-    setShowAdd(true);
-  };
-
-  const circleCancelFunction = () => {
-    setShowAdd(false);
-  };
-
+  //QUANDO ADICIONAR UM ITEM
   const submitNewList = () => {
     if (input1 === "") return false;
     requestsService(
@@ -156,18 +99,93 @@ export const List = ({ place }: InterfaceList) => {
           );
         },
       });
-    })
-
+    });
     setInput2("");
     setInput1("");
-
     updateList();
+  };
+
+  //QUANDO CONCLUIR ALGUM ITEM
+  const circleCheckFunction = () => {
+    select.map((e) => {
+      if (e.checked === true) {
+        requestsService(
+          "PUT",
+          {
+            id: e.id,
+            name: e.name,
+            number: e.number,
+            status: 1,
+          },
+          place,
+          changeSelect,
+          e.id
+        );
+      }
+    });
+    updateList();
+  };
+
+  //QUANDO ATUALIZAR A PAGINA
+  const refresh = async () => {
+    getData();
+    setRefreshing(true);
+    updateList()
+    setRefreshing(false);
+  };
+
+  //ATUALIZAR LISTA
+  const  updateList = async () => {
+  
+      const resp = await axios.get(
+        `http://192.168.15.37:3001/${place}/?_sort=id&_order=desc`
+      );
+      if (resp.status === 200) {
+        let array: InterfaceService[] = resp.data;
+        array.map((e) => {
+          e.checked = false;
+        });
+        changeSelect(array);
+        storeData(JSON.stringify(array));
+      }
+    changeCircleCheck(false);
+
+  };
+
+  //FRONTEND
+  React.useEffect(() => {
+    const found = select.find((e) => e.checked === true);
+    if (found) {
+      changeCircleCheck(true);
+    } else {
+      changeCircleCheck(false);
+    }
+  }, [select]);
+
+  const checkClick = (e: InterfaceService) => {
+    let array: InterfaceService[] = select;
+    const newArray = array.map((fe) => {
+      if (e.id === fe.id) {
+        fe.checked = !e.checked;
+      }
+      return fe;
+    });
+    changeSelect(newArray);
+  };
+
+  const circleMoreFunction = () => {
+    setShowAdd(true);
+  };
+
+  const circleCancelFunction = () => {
+    setShowAdd(false);
   };
 
   return (
     <View style={[styles().container]}>
       <View style={[styles().header]}>
         <Header
+          colorHistory={showHistory ? "#323232" : "#32323280"}
           onClickHistory={() => {
             setShowHistory(!showHistory);
           }}
@@ -207,7 +225,6 @@ export const List = ({ place }: InterfaceList) => {
               onClickButton={submitNewList}
             ></InputText>
           )}
-
           {select &&
             select.map((e) => {
               if (e.status === 0 && showHistory === false)

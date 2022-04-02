@@ -1,19 +1,18 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-
+import { StyleSheet, View } from "react-native";
 import { AppProvider } from "./src/hooks";
 import React from "react";
 import Principal from "./src/pages/Principal";
 import { NativeBaseProvider } from "native-base";
 
 const App = () => {
+
   return (
     <NativeBaseProvider>
-      <View style={styles.container}>
-        <AppProvider>
+      <AppProvider>
+        <View style={styles.container}>
           <Principal></Principal>
-        </AppProvider>
-      </View>
+        </View>
+      </AppProvider>
     </NativeBaseProvider>
   );
 };

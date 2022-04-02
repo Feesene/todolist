@@ -10,17 +10,21 @@ interface InterfaceButton {
 }
 
 export const Button = ({ onClick, children, size = 70 }: InterfaceButton) => {
+  const [hover, setHover] = React.useState(false);
+
   return (
     <View
+      onTouchStart={() => setHover(true)}
+      onTouchEndCapture={() => setHover(false)}
       onTouchEnd={onClick}
-      style={[styles(size).container, styles().elevation]}
+      style={[styles(size, hover).container, styles().elevation]}
     >
       {children}
     </View>
   );
 };
 
-const styles = (size?: number) =>
+const styles = (size?: number, hover?: boolean) =>
   StyleSheet.create({
     container: {
       height: 50,
@@ -34,7 +38,7 @@ const styles = (size?: number) =>
       shadowOffset: { height: 2, width: 1 },
       shadowOpacity: 1,
       shadowRadius: 3,
-      backgroundColor: colors.Light100,
+      backgroundColor: hover ? colors.Light80 : colors.Light100,
     },
     elevation: {
       elevation: 15,
