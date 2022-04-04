@@ -6,6 +6,7 @@ const colorsThemes = {
   Dark80: "#34393F",
   Dark60: "#24282C",
   primary:"#A14BB7",
-  primaryHover:"#602D6D"
+  primaryHover:"#602D6D",
+  danger:"#EE4C44"
 };
 export default colorsThemes;

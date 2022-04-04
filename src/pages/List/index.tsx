@@ -11,6 +11,7 @@ import { Item } from "../../components/Item";
 import { Toolbar } from "../../components/Toolbar";
 import { Header } from "../../components/Header";
 import { CircleButton } from "../../components/CircleButton";
+import { Loading } from "../../components/Loading";
 import { InterfaceService } from "../../interfaces/InterfaceService";
 import axios from "axios";
 import { InputText } from "../../components/InputText";
@@ -27,6 +28,7 @@ export const List = ({ place }: InterfaceList) => {
   const [enter, Onenter] = React.useState<boolean>(false);
   const [circleCheck, changeCircleCheck] = React.useState<boolean>(false);
   const [showAdd, setShowAdd] = React.useState(false);
+  const [status, setStatus] = React.useState(false);
   const [showHistory, setShowHistory] = React.useState(false);
   const [input1, setInput1] = React.useState("");
   const [input2, setInput2] = React.useState("");
@@ -55,24 +57,19 @@ export const List = ({ place }: InterfaceList) => {
     }
   };
 
+  const storeDataLenght = async (value: string) => {
+    try {
+      await AsyncStorage.setItem(`@${place}Lenght`, value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   //QUANDO CARREGAR A LISTA NO LOAD
   React.useEffect(() => {
     if (enter === false) {
-      const set = async () => {
-        const resp = await axios.get(
-          `http://192.168.15.37:3001/${place}/?_sort=id&_order=desc`
-        );
-        if (resp.status === 200) {
-          let array: InterfaceService[] = resp.data;
-          array.map((e) => {
-            e.checked = false;
-          });
-          changeSelect(array);
-          storeData(JSON.stringify(array));
-          Onenter(true);
-        }
-      };
-      set();
+      getData();
+      updateList(true);
     }
   }, []);
 
@@ -128,6 +125,7 @@ export const List = ({ place }: InterfaceList) => {
 
   //QUANDO ATUALIZAR A PAGINA
   const refresh = async () => {
+  
     getData();
     setRefreshing(true);
     updateList()
@@ -135,7 +133,7 @@ export const List = ({ place }: InterfaceList) => {
   };
 
   //ATUALIZAR LISTA
-  const  updateList = async () => {
+  const  updateList = async (refreshLenght?:boolean) => {
   
       const resp = await axios.get(
         `http://192.168.15.37:3001/${place}/?_sort=id&_order=desc`
@@ -146,6 +144,7 @@ export const List = ({ place }: InterfaceList) => {
           e.checked = false;
         });
         changeSelect(array);
+        refreshLenght && storeDataLenght(String(array.length))
         storeData(JSON.stringify(array));
       }
     changeCircleCheck(false);
@@ -204,6 +203,7 @@ export const List = ({ place }: InterfaceList) => {
           )}
         </Header>
       </View>
+ 
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -213,6 +213,7 @@ export const List = ({ place }: InterfaceList) => {
           />
         }
       >
+     
         <View style={[styles().list]}>
           {showAdd && (
             <InputText
@@ -230,6 +231,7 @@ export const List = ({ place }: InterfaceList) => {
               if (e.status === 0 && showHistory === false)
                 return (
                   <View key={e.id} style={styles().margin}>
+                         <Loading status={refreshing}/>
                     <Item
                       showSelect={true}
                       onClickCheck={() => showAdd === false && checkClick(e)}
